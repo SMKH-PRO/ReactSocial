@@ -1,0 +1,26 @@
+
+.Loginparent {
+    position: relative;
+  }
+  .Loginchild {
+      text-align: -webkit-center;
+      width:100%;
+      max-width: 400px;
+      background: white;
+      min-width: 235px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 5%);
+padding-top: 15px;
+padding-bottom: 40px;
+    filter:drop-shadow(0px 0px 2px black);
+    border-radius: 10px;
+  }
+.logologin{width:100px;}
+  .maxwidth250{max-width: 250px !important;}
+  
+  .LoginNowButton{
+      margin-left:50px !important;
+  }
