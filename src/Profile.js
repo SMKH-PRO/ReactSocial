@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import './Profile.css';
 
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Divider from '@material-ui/core/Divider';
 
 import AppBar from '@material-ui/core/AppBar';
 import ThumbUp from '@material-ui/icons/ThumbUp';
@@ -19,7 +23,14 @@ import Edit from '@material-ui/icons/Edit';
 import ChatIcon from '@material-ui/icons/Chat';
 import Avatar from '@material-ui/core/Avatar';
 
+import { BPImage } from 'bigpicture-react';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import AgeIcon from '@material-ui/icons/AccessibilityNew';
+import HomeIcon from '@material-ui/icons/Home';
 
+import GenderIcon from '@material-ui/icons/Wc';
 import * as firebase from 'firebase';
 
 
@@ -54,8 +65,8 @@ class Profile extends Component {
     super(props)
   this.state ={
     value: 0,
-    coverIMG:'./cover.jpg',
-    ProfileIMG:'file:///C:/Users/SPLIT%20x2/Desktop/create-react-app-boiler-plate-master/src/profile.jpg'
+    coverIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/cover.jpg',
+    ProfileIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg'
   }
   
   }
@@ -64,7 +75,7 @@ class Profile extends Component {
 
   handleChange = (event, value) => {
     this.setState({ value });
-  };nn
+  };
 
   
   render() {
@@ -75,24 +86,65 @@ class Profile extends Component {
       
       <div >
       <Card  style={{borderRadius:'0px'}}>
-      <CardActionArea style={{width:'100% '}}>
      
-        <img className="ProfileCover" src={this.state.ProfileIMG} />
-        <CardContent > 
-        <Avatar  className="UserProfilePic"  alt="Profile PIC" src={{uri:this.state.ProfileIMG}} / >
-      
-        <br/>
-        <br/>
+      <BPImage className="BPCover" src={this.state.coverIMG} caption="Profile Picture Of This User" >
+ 
+        <img  className="ProfileCover" src={this.state.coverIMG} />
 
-          <Typography gutterBottom variant="headline" component="h2">
-            Lizard
-          </Typography>
-          <Typography component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
-          </Typography>
+</BPImage>
+
+
+
+        <BPImage src={this.state.ProfileIMG} caption="Profile Picture Of This User" >
+        <Avatar  className="UserProfilePic"  alt="Profile PIC" src={this.state.ProfileIMG}  / >
+        </BPImage>
+     <CardContent > 
+      
+      
+          <Typography className="UserName" gutterBottom variant="headline" component="h2">
+Kashan Haider   
+       </Typography>
+       <Typography  component="p">
+loremipsum
+       </Typography>
+          <br/>
+          <ExpansionPanel className="AboutUser">
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography className="UserBioData">About</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+        <div>
+         <List>
+         <ListItem>
+          <Avatar>
+            <HomeIcon />
+          </Avatar>
+          <ListItemText primary="Lives In" secondary="Karachi, Pakistan" />
+        </ListItem>
+        
+        <ListItem>
+          <Avatar>
+            <AgeIcon />
+          </Avatar>
+          <ListItemText primary="Age" secondary="17 Years Old" />
+        </ListItem>
+        <ListItem>
+          <Avatar>
+            <GenderIcon />
+          </Avatar>
+          <ListItemText primary="Gender" secondary="Male" />
+        </ListItem>
+        
+      </List>
+
+           </div>
+
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      <Divider  />
+
         </CardContent>
-      </CardActionArea>
+
       <CardActions>
       <Button title="Chat" variant="fab" color="primary" aria-label="Chat" >
         <ChatIcon />

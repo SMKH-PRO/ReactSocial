@@ -4,14 +4,32 @@
     width:50%;
 }
 .ProfileCover{
-    width:100%;
-    height:200px;
+    width:100% !important;
+    height:170px;
+    cursor: pointer;
 }
 
 .UserProfilePic{
+    cursor: pointer;
     width:100px !important;
     height:100px !important;
-    position: absolute !important;
-    top:145px;
+margin-top: -60px !important;
+margin:10px;
     filter:drop-shadow(0px 0px 1px black);
+    border:2px solid white;
+
+}
+.bigpicture.link.picture {
+    display: block !important;
+}
+.UserBioData {
+    text-transform: uppercase;
+    font-weight: 550 !important;
+}
+.UserName{
+    text-transform: uppercase;
+    font-weight: 550 !important;
+}
+.AboutUser{
+    box-shadow: 0px 0px 0px black !important;
 }
