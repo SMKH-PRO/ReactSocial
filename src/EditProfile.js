@@ -28,7 +28,7 @@ class ProfileEdit extends Component {
   constructor(props){
     super(props)
   this.state ={
-      coverIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/cover.jpg',
+      coverIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/loadingcover.gif',
     ProfileIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg',
     loading1:true,
     success1:false,
@@ -58,7 +58,8 @@ setTimeout(() => {
 
 }else{
 
-  this.setState({OldProfile:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg',})
+  this.setState({OldProfile:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg',
+  ProfileIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg',})
   setTimeout(() => {
     this.setState({loading1:false})
   
@@ -71,7 +72,7 @@ firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/cover`).
 this.setState({coverIMG: data.val(),OldCover:data.val()})
   }
 else{
-  this.setState({OldCover:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/cover.jpg'})
+  this.setState({OldCover:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/cover.jpg',coverIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/cover.jpg'})
 }
 })
 }
