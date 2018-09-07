@@ -29,6 +29,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import AgeIcon from '@material-ui/icons/AccessibilityNew';
 import HomeIcon from '@material-ui/icons/Home';
+import Loading from 'react-spinners/ScaleLoader';
+import MoonLoader from 'react-spinners/MoonLoader';
 
 import GenderIcon from '@material-ui/icons/Wc';
 import * as firebase from 'firebase';
@@ -66,7 +68,13 @@ class Profile extends Component {
   this.state ={
     value: 0,
     coverIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/cover.jpg',
-    ProfileIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg'
+    ProfileIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg',
+    loading:true,
+    Name: '',
+    Bio:'',
+    LivesIn:'',
+    Age:'',
+    Gender:'',
   }
   
   }
@@ -81,16 +89,20 @@ class Profile extends Component {
   render() {
     const { value } = this.state;
 
-    
+    const LoadingSpinner = (
+      <Loading  sizeUnit={"px"}  color="#2196f3" size={10}  loading={this.state.loading} />
+    )
     return (
       
       <div >
+<div class="center-div">
+            <MoonLoader  sizeUnit={"px"} className="ProfileImageLoader" color="#2196f3" size={80}  loading={this.state.loading} /></div>
       <Card  style={{borderRadius:'0px'}}>
      
       <BPImage className="BPCover" src={this.state.coverIMG} caption="Profile Picture Of This User" >
  
         <img  className="ProfileCover" src={this.state.coverIMG} />
-
+    
 </BPImage>
 
 
@@ -102,10 +114,10 @@ class Profile extends Component {
       
       
           <Typography className="UserName" gutterBottom variant="headline" component="h2">
-Kashan Haider   
+    {this.state.Name } { LoadingSpinner}   
        </Typography>
        <Typography  component="p">
-loremipsum
+{this.state.bio} <Loading  sizeUnit={"px"} className="LoadingBio" color="#2196f3" size={10}  loading={this.state.loading} />
        </Typography>
           <br/>
           <ExpansionPanel className="AboutUser">
@@ -119,20 +131,20 @@ loremipsum
           <Avatar>
             <HomeIcon />
           </Avatar>
-          <ListItemText primary="Lives In" secondary="Karachi, Pakistan" />
+          <ListItemText primary="Lives In" secondary={this.state.LivesIn , LoadingSpinner } />
         </ListItem>
         
         <ListItem>
           <Avatar>
             <AgeIcon />
           </Avatar>
-          <ListItemText primary="Age" secondary="17 Years Old" />
+          <ListItemText primary="Age" secondary={this.state.Age, LoadingSpinner} />
         </ListItem>
         <ListItem>
           <Avatar>
             <GenderIcon />
           </Avatar>
-          <ListItemText primary="Gender" secondary="Male" />
+          <ListItemText primary="Gender" secondary={this.state.Gender, LoadingSpinner} />
         </ListItem>
         
       </List>
@@ -146,13 +158,13 @@ loremipsum
         </CardContent>
 
       <CardActions>
-      <Button title="Chat" variant="fab" color="primary" aria-label="Chat" >
+      <Button title="Chat" onClick={()=>{this.setState({loading:false})}} variant="fab" color="primary" aria-label="Chat" >
         <ChatIcon />
       </Button>
         <Button title="Follow" variant="fab" style={{background:'#2196f3',color:'white'}} aria-label="Add" >
         <Follow />
       </Button>
-      <Button  title="Edit" variant="fab" color="primary" aria-label="Edit" >
+      <Button  onClick={()=>{      this.props.history.push('EditProfile')}} title="Edit" variant="fab" color="primary" aria-label="Edit" >
         <Edit />
       </Button>
       </CardActions>
@@ -178,16 +190,19 @@ loremipsum
           </ center>
         </AppBar>
         
-        {value === 0 && <TabContainer>Item One
+        {value === 0 && <TabContainer>
 
 
-          <ol>
-
-            <li>wow</li> <li>wow</li> <li>wow</li> <li>wow</li> <li>wow</li> <li>wow</li><li>wow</li> <li>wow</li> <li>wow</li> <li>wow</li> <li>wow</li> <li>wow</li>
-          </ol>
+          {LoadingSpinner}
         </TabContainer>}
-        {value === 1 && <TabContainer>Item Two</TabContainer>}
-        {value === 2 && <TabContainer>Item Three</TabContainer>}
+        {value === 1 && <TabContainer>
+          {LoadingSpinner}
+
+        </TabContainer>}
+        {value === 2 && <TabContainer>
+
+              {LoadingSpinner}
+        </TabContainer>}
         
       </div>
 {/*Profile tabs ends above*/}

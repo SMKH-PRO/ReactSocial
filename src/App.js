@@ -39,23 +39,25 @@ import register from './register.js';
 
 import Home from './Home';
 import Profile from './Profile.js';
+import EditProfile from './EditProfile.js';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 const History = createBrowserHistory();
 
 const config = {
-  apiKey: "AIzaSyDap2PlQsFky5YnQRhyMqsWENasn_hJUiU",
-  authDomain: "saylani-7b489.firebaseapp.com",
-  databaseURL: "https://saylani-7b489.firebaseio.com",
-  projectId: "saylani-7b489",
-  storageBucket: "saylani-7b489.appspot.com",
-  messagingSenderId: "349400059211"
+  apiKey: "AIzaSyC4QySEUeiGU1M4f4TZHrSQE_i5a-fSYBQ",
+  authDomain: "reactsocial-a36e6.firebaseapp.com",
+  databaseURL: "https://reactsocial-a36e6.firebaseio.com",
+  projectId: "reactsocial-a36e6",
+  storageBucket: "reactsocial-a36e6.appspot.com",
+  messagingSenderId: "534444970963"
 };
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
+
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -306,6 +308,7 @@ ReactSocial            </Typography></Link>
          this.state.loggedIn ?   <Home /> :  <SignIn loggedIn={this.state.loggedIn} />*/}
 
 <Route exact path="/" component={Signin} />
+<Route exact path="/EditProfile" component={EditProfile} />
 
         <Route exact path="/Profile" component={Profile}/>   
 

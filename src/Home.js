@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import SignIn from './signin';
+
 import * as firebase from 'firebase';
 
-class App extends Component {
+class Home extends Component {
 
 /*
   constructor(props){
@@ -30,4 +28,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Home;
