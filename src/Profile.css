@@ -4,23 +4,42 @@
     width:50%;
 }
 .ProfileCover{
+    background-repeat:no-repeat;
+background-position: center center;   
+background-size:100%;
+cursor: pointer;
     width:100% !important;
-    height:170px;
+    height:200px;
+    object-fit: cover;
     cursor: pointer;
+
+}
+.ProfileCard{
+    min-width: 250px;
 }
 
 .UserProfilePic{
-    cursor: pointer;
+
+
     width:100px !important;
     height:100px !important;
-margin-top: -60px !important;
+    max-height:100px !important;
+margin-top: -80px !important;
 margin:10px;
     filter:drop-shadow(0px 0px 1px black);
     border:2px solid white;
 
 }
+#bp_container img, #bp_sv, #bp_aud, #bp_vid{
+    box-shadow:0px 0px 0px black !important;
+    filter:drop-shadow(0px 0px 10px black);
+
+    transform:scale(1.1) !important;
+}
 .bigpicture.link.picture {
-    display: block !important;
+    display: inline !important;
+    cursor:pointer !important;
+    width:inherit !important;
 }
 .UserBioData {
     text-transform: uppercase;
@@ -49,3 +68,13 @@ text-align: center !important;
      width: 100px;
      height: 100px;
 }
+
+
+
+@media only screen and (max-width: 500px) {
+ 
+
+.ProfileCover{
+    background-size:200%;
+    
+}}

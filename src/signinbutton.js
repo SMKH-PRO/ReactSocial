@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import green from '@material-ui/core/colors/green';
 import Button from '@material-ui/core/Button';
-import CheckIcon from '@material-ui/icons/Check';
 import Zoom from '@material-ui/core/Zoom';
 import Tooltip from '@material-ui/core/Tooltip';
 import * as firebase from 'firebase';

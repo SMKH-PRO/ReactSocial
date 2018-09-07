@@ -75,10 +75,87 @@ class Profile extends Component {
     LivesIn:'',
     Age:'',
     Gender:'',
+    
   }
+  this.ChangeCover = this.ChangeCover.bind(this)
+
   
   }
 
+  componentDidMount(){
+    this.ChangeCover();
+  }
+  ChangeCover(){
+
+
+
+if(localStorage.getItem("Cover") != null){
+  this.setState({coverIMG: localStorage.getItem("Cover")})
+}
+if(localStorage.getItem("Profile") != null){
+  this.setState({ProfileIMG: localStorage.getItem("Profile")})
+}
+    console.log("CHange Cover started")
+if(firebase.auth().currentUser !== null){
+
+if(firebase.auth().currentUser.photoURL !== null && firebase.auth().currentUser.photoURL != "null"){
+
+this.setState({ProfileIMG:firebase.auth().currentUser.photoURL})
+localStorage.setItem("Profile", firebase.auth().currentUser.photoURL)
+setTimeout(() => {
+  this.setState({loading1:false})
+
+}, 500);
+
+}else{
+  localStorage.setItem("Profile",'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg' )
+
+  this.setState({ProfileIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg'})
+  setTimeout(() => {
+    this.setState({loading1:false})
+  
+  }, 500);
+}
+firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/`).on('value',(data)=>{
+  if(data.child("Name").val() != null && data.child("Bio").val() != null && data.child("LivesIn").val() != null && data.child("Age").val() != null && data.child("Gender").val() != null ){
+
+
+
+    this.setState({
+      Name: data.child("Name").val(),
+      Bio:data.child("Bio").val(),
+      LivesIn:data.child("LivesIn").val(),
+      Age:data.child("Age").val(),
+      Gender:data.child("Gender").val(),
+    })
+  }else{
+    console.log("Something Is Missing!")
+  }
+
+})
+
+
+
+firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/cover`).on('value',(data)=>{
+
+  if(data.val() != null){
+this.setState({coverIMG: data.val()})
+localStorage.setItem("Cover",data.val())
+  }
+else{
+  localStorage.setItem("Cover","https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/cover.jpg")
+
+  this.setState({coverIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/cover.jpg'})
+}
+})
+}
+else{
+  this.setState({loading1:true})
+  setTimeout(() => {
+    this.ChangeCover();
+  }, 500);
+}
+  }
  
 
   handleChange = (event, value) => {
@@ -97,19 +174,20 @@ class Profile extends Component {
       <div >
 <div class="center-div">
             <MoonLoader  sizeUnit={"px"} className="ProfileImageLoader" color="#2196f3" size={80}  loading={this.state.loading} /></div>
-      <Card  style={{borderRadius:'0px'}}>
+      <Card  className="ProfileCard" style={{borderRadius:'0px'}}>
      
-      <BPImage className="BPCover" src={this.state.coverIMG} caption="Profile Picture Of This User" >
+      <BPImage className="BPCover" src={this.state.coverIMG} caption={`Profile Cover Image Of ${this.state.Name}`}>
  
-        <img  className="ProfileCover" src={this.state.coverIMG} />
+      <div style={{backgroundImage:`url(${this.state.coverIMG})`}} className="ProfileCover" ></div>
     
 </BPImage>
 
 
-
-        <BPImage src={this.state.ProfileIMG} caption="Profile Picture Of This User" >
+<div style={{maxWidth:'100px'}}>
+        <BPImage src={this.state.ProfileIMG} caption={`Profile Picture Of ${this.state.Name}`}>
         <Avatar  className="UserProfilePic"  alt="Profile PIC" src={this.state.ProfileIMG}  / >
         </BPImage>
+        </div>
      <CardContent > 
       
       
