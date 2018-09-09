@@ -16,3 +16,6 @@ margin-bottom:-100px !important;
     margin-left:6px !important; margin-bottom: -45px !important; z-index: 999;
 }
 
+.SaveChanges{
+    float: right !important;
+}

@@ -71,20 +71,36 @@ class Profile extends Component {
     ProfileIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg',
     loading:true,
     Name: '',
+    nameloading:true,
     Bio:'',
     LivesIn:'',
     Age:'',
     Gender:'',
+    City:'',
+    Country:'',
+    
     
   }
   this.ChangeCover = this.ChangeCover.bind(this)
 
-  
   }
+
+
+
+
 
   componentDidMount(){
     this.ChangeCover();
   }
+
+
+
+
+
+
+
+
+
   ChangeCover(){
 
 
@@ -97,6 +113,11 @@ if(localStorage.getItem("Profile") != null){
 }
     console.log("CHange Cover started")
 if(firebase.auth().currentUser !== null){
+
+let username=  firebase.auth().currentUser.displayName;
+if(username !== null){
+  this.setState({Name: username,nameloading:false})
+}
 
 if(firebase.auth().currentUser.photoURL !== null && firebase.auth().currentUser.photoURL != "null"){
 
@@ -117,19 +138,22 @@ setTimeout(() => {
   }, 500);
 }
 firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/`).on('value',(data)=>{
-  if(data.child("Name").val() != null && data.child("Bio").val() != null && data.child("LivesIn").val() != null && data.child("Age").val() != null && data.child("Gender").val() != null ){
+  if(data.child("Name").val() != null && data.child("Bio").val() != null && data.child("Country").val() && data.child("City").val()!= null && data.child("Age").val() != null && data.child("Gender").val() != null ){
 
 
 
     this.setState({
-      Name: data.child("Name").val(),
       Bio:data.child("Bio").val(),
-      LivesIn:data.child("LivesIn").val(),
+      LivesIn:data.child("Country").val()+", "+data.child("City").val(),
       Age:data.child("Age").val(),
       Gender:data.child("Gender").val(),
+      loading:false,
     })
   }else{
-    console.log("Something Is Missing!")
+    console.log("Something Is Missing!",data.child("Gender").val(),data.child("Bio").val(),data.child("Age").val() )
+
+    this.props.history.push('EditProfile')
+    
   }
 
 })
@@ -163,8 +187,8 @@ else{
   };
 
   
-  render() {
-    const { value } = this.state;
+  render() {loading
+    const { value,loading,Age,Bio,Name,LivesIn,Gender,City,Country } = this.state;
 
     const LoadingSpinner = (
       <Loading  sizeUnit={"px"}  color="#2196f3" size={10}  loading={this.state.loading} />
@@ -172,7 +196,7 @@ else{
     return (
       
       <div >
-<div class="center-div">
+<div className="center-div">
             <MoonLoader  sizeUnit={"px"} className="ProfileImageLoader" color="#2196f3" size={80}  loading={this.state.loading} /></div>
       <Card  className="ProfileCard" style={{borderRadius:'0px'}}>
      
@@ -192,7 +216,8 @@ else{
       
       
           <Typography className="UserName" gutterBottom variant="headline" component="h2">
-    {this.state.Name } { LoadingSpinner}   
+    {this.state.Name }       <Loading  sizeUnit={"px"}  color="#2196f3" size={10}  loading={this.state.nameloading} />
+
        </Typography>
        <Typography  component="p">
 {this.state.bio} <Loading  sizeUnit={"px"} className="LoadingBio" color="#2196f3" size={10}  loading={this.state.loading} />
@@ -200,7 +225,7 @@ else{
           <br/>
           <ExpansionPanel className="AboutUser">
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className="UserBioData">About</Typography>
+          <Typography className="UserBio">About</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
         <div>
@@ -209,7 +234,7 @@ else{
           <Avatar>
             <HomeIcon />
           </Avatar>
-          <ListItemText primary="Lives In" secondary={this.state.LivesIn , LoadingSpinner } />
+          <ListItemText primary="Lives In" secondary={this.state.LivesIn  } />
         </ListItem>
         
         <ListItem>
@@ -236,7 +261,7 @@ else{
         </CardContent>
 
       <CardActions>
-      <Button title="Chat" onClick={()=>{this.setState({loading:false})}} variant="fab" color="primary" aria-label="Chat" >
+      <Button title="Chat" onClick={()=>{ console.log(Age,Bio,Name,Gender,City,Country) }} variant="fab" color="primary" aria-label="Chat" >
         <ChatIcon />
       </Button>
         <Button title="Follow" variant="fab" style={{background:'#2196f3',color:'white'}} aria-label="Add" >
