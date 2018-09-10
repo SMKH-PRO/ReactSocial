@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-
+import './Home.css'
 import * as firebase from 'firebase';
 import Paper from '@material-ui/core/Paper';
+import Avatar from '@material-ui/core/Avatar';
+import TextField from '@material-ui/core/TextField';
+
 
 class Home extends Component {
 
@@ -9,6 +12,9 @@ class Home extends Component {
   constructor(props){
     super(props)
   this.state ={
+    Name:'',
+    ProfileIMG:'',
+    PostText:''
 
   }
   this.FunctionBeforeRender = this.FunctionBeforeRender.bind(this)
@@ -21,11 +27,16 @@ class Home extends Component {
     }
     
 
+    handleChange = name => event => {
+      this.setState({
+        [name]: event.target.value,
+      });
+    };
 FunctionBeforeRender(){
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       // User is signed in.
-
+this.setState({Name:user.displayName,ProfileIMG:user.photoURL})
       firebase.database().ref(`USERDETAILS/${user.uid}/`).on('value',(data)=>{
         if(data.child("Name").val() != null && data.child("Bio").val() != null && data.child("Country").val() && data.child("City").val()!= null && data.child("Age").val() != null && data.child("Gender").val() != null ){
       
@@ -55,13 +66,15 @@ FunctionBeforeRender(){
 
   
   render() {
+
+    const {Name , ProfileIMG} =this.state
     
     return (
-      <div>
-     <Paper style={{padding:'10px'}}>
-   <h1>HOME PAGE !!!!</h1>
+      <div >
+     <Paper className="PostDiv">
      
-   <br/><br/><br/><br/><br/><br/><br/>
+    <img className="PostAvatar" src={ProfileIMG ? ProfileIMG : false} />
+   <textarea className="PostTextArea"></textarea>
 
      </Paper>
     </div>

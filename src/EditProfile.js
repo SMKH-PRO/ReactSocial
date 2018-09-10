@@ -664,7 +664,8 @@ if( DisableNameChange !== true){
 
       firebase.auth().currentUser.updateProfile({
  
-        displayName:FName+" "+LName
+        displayName:FName+" "+LName,
+        photoURL: this.state.ProfileIMG
       }).then(()=> {
         // Update successful.
         this.setState({loading3:false,success3:true})
