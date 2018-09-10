@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import LoadingScale from 'react-spinners/MoonLoader';
 
 import * as firebase from 'firebase';
 import PropTypes from 'prop-types';
@@ -135,7 +136,8 @@ class MiniDrawer extends React.Component {
    this.state = {
       open: false,
       loggedIn: false,
-      LogoutSuccess: false
+      LogoutSuccess: false,
+      LogInNotChecked:true,
     };
 
     
@@ -151,16 +153,16 @@ checklogin(){
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       // User is signed in.
-
+      
    // console.log(user)
-    this.setState({loggedIn: true})
+    this.setState({loggedIn: true,LogInNotChecked:false})
 
       // ...
     } else {
       // User is signed out.
       // ...
 console.log("Logged Out")
-      this.setState({loggedIn: false})
+      this.setState({loggedIn: false,LogInNotChecked:false})
     }
   });
 };
@@ -243,7 +245,7 @@ ReactSocial            </Typography></Link>
               <span>
        <List>
 
-            <Link to="/">   <ListItem button>
+            <Link to="/Home">   <ListItem button>
       <ListItemIcon>
         <HomeIcon />
       </ListItemIcon>
@@ -280,7 +282,19 @@ ReactSocial            </Typography></Link>
   ) : (
 
 
+
 <List>
+
+  {this.state.LogInNotChecked ? (
+<span>
+<br/>
+<br/>
+
+    <LoadingScale style={{margin:'5px'}} sizeUnit={"px"}  color="#2196f3" size={10} />
+
+    </span>
+  ):(
+    <span>
 <Link to="/">   <ListItem button>
 <ListItemIcon>
 <SigninIcon />
@@ -294,7 +308,11 @@ ReactSocial            </Typography></Link>
 <SignupIcon />
 </ListItemIcon>
 <ListItemText primary="SignUp " />
-</ListItem></Link> </List>
+</ListItem></Link> 
+</span>
+)}
+
+</List>
 
     )
 }

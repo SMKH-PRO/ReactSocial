@@ -12,6 +12,7 @@ import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import './EditProfile.css';
 import Dialog from '@material-ui/core/Dialog';
+import Tooltip from '@material-ui/core/Tooltip';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -141,6 +142,12 @@ if(data.hasChild("LivesIn")){
 }
 if(data.hasChild("Gender")){
   this.setState({Gender:data.child("Gender").val()})
+}
+if(data.hasChild("City")){
+  this.setState({City:data.child("City").val()})
+}
+if(data.hasChild("Country")){
+  this.setState({Country:data.child("Country").val()})
 }
     }).then(()=>{
 
@@ -784,7 +791,12 @@ if( DisableNameChange !== true){
   
   
   { this.state.DisableNameChange ?(
+    <Tooltip title="You can not change your name again, you already did once!.">
+    <span>
+    
     <TextField id="FullName" InputProps={{ readOnly: true, }} label="Name"  placeholder="FullName" value={this.state.Name} margin="normal" />
+    </span>
+  </Tooltip>
   ): (
     <span>
   <TextField id="FNAME" label="First Name" placeholder="Cannot be changed later!" value={this.state.FName} onChange={this.handleChange('FName')} margin="normal" />

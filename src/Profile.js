@@ -144,7 +144,7 @@ firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/`).on('v
 
     this.setState({
       Bio:data.child("Bio").val(),
-      LivesIn:data.child("Country").val()+", "+data.child("City").val(),
+      LivesIn:data.child("City").val()+", "+data.child("Country").val(),
       Age:data.child("Age").val(),
       Gender:data.child("Gender").val(),
       loading:false,
@@ -220,7 +220,7 @@ else{
 
        </Typography>
        <Typography  component="p">
-{this.state.bio} <Loading  sizeUnit={"px"} className="LoadingBio" color="#2196f3" size={10}  loading={this.state.loading} />
+{this.state.Bio} <Loading  sizeUnit={"px"} className="LoadingBio" color="#2196f3" size={10}  loading={this.state.loading} />
        </Typography>
           <br/>
           <ExpansionPanel className="AboutUser">
@@ -234,20 +234,20 @@ else{
           <Avatar>
             <HomeIcon />
           </Avatar>
-          <ListItemText primary="Lives In" secondary={this.state.LivesIn  } />
+          <ListItemText primary="Lives In" secondary={this.state.loading ? LoadingSpinner: this.state.LivesIn  } />
         </ListItem>
         
         <ListItem>
           <Avatar>
             <AgeIcon />
           </Avatar>
-          <ListItemText primary="Age" secondary={this.state.Age, LoadingSpinner} />
+          <ListItemText primary="Age" secondary={this.state.loading ? LoadingSpinner: this.state.Age } />
         </ListItem>
         <ListItem>
           <Avatar>
             <GenderIcon />
           </Avatar>
-          <ListItemText primary="Gender" secondary={this.state.Gender, LoadingSpinner} />
+          <ListItemText primary="Gender" secondary={this.state.loading ? LoadingSpinner:this.state.Gender} />
         </ListItem>
         
       </List>
