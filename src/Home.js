@@ -18,6 +18,9 @@ class Home extends Component {
 
   }
   this.FunctionBeforeRender = this.FunctionBeforeRender.bind(this)
+
+  this.handleChange = this.handleChange.bind(this)
+  this.keyDownHandler =   this.keyDownHandler.bind(this)
   }
 
   componentDidMount(){
@@ -31,6 +34,16 @@ class Home extends Component {
       this.setState({
         [name]: event.target.value,
       });
+
+      if(name == "PostText"){
+if(this.state.PostText.length > 499){
+  setTimeout(() => {
+    this.setState({PostText:this.state.PostText.substring(0, 500)})
+
+  }, 20);
+}
+}
+    
     };
 FunctionBeforeRender(){
   firebase.auth().onAuthStateChanged((user) => {
@@ -64,19 +77,79 @@ this.setState({Name:user.displayName,ProfileIMG:user.photoURL})
 }
 
 
+
+keyDownHandler(e){
+
+  setTimeout(() => {
+    this.setState({PostText:this.state.PostText.substring(0, 500)})
+
+  }, 20);
+
+
+  if((this.state.PostText.match(new RegExp("\n", "g")) || []).length >2 ){
+
+    e.preventDefault()
+
+  }
+
+if(e.target.value.length >499){
+    if(e.keyCode != 8){
+
+      
+    e.preventDefault()
+
+    this.setState({PostText:this.state.PostText.substring(0, 500)})
+    }
+    
+    
+         }
+      
+}
   
   render() {
 
-    const {Name , ProfileIMG} =this.state
+    const {Name , ProfileIMG,PostText} =this.state
     
     return (
       <div >
-     <Paper className="PostDiv">
-     
-    <img className="PostAvatar" src={ProfileIMG ? ProfileIMG : false} />
-   <textarea className="PostTextArea"></textarea>
+             <img  className="PostAvatar" src={ProfileIMG ? ProfileIMG : false} />
 
+     <Paper className="PostDiv">
+     <textarea onPaste={this.keyDownHandler} value={PostText} onKeyDown={this.keyDownHandler} onChange={this.handleChange("PostText")} className="PostTextArea"></textarea>
      </Paper>
+
+<p style={{float:'right'}}>{PostText.length} / 500</p>
+
+
+
+
+
+
+
+
+
+
+
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <p>Hello</p>
+
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <p>Hello</p>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <p>Hello</p>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <p>Hello</p>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <p>Hello</p>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <p>Hello</p>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <p>Hello</p>
+
+
+
+
+
     </div>
       
     );
