@@ -2,9 +2,14 @@
 .PostDiv{
 
 padding: 1px !important;
-height:100px;
+height:auto;
+
+
+overflow: hidden;
 border-bottom-left-radius: 50px !important;
     border-top-left-radius: 50px !important;
+    min-height: 100px;
+
 }
 .PostAvatar{
     max-width: 100% !important;
@@ -16,17 +21,90 @@ border-bottom-left-radius: 50px !important;
    
     height: 100px !important;
 }
+.attachicon{
+    float: right;
+    position: relative;
+    box-shadow: 0px 0px 0px black !important;
+    background-color: transparent !important;
+}
 .PostTextArea {
-    resize: none;
+ max-height:300px;
+    resize: vertical;
     outline-width: 0px;
     padding-top:15px;
     padding-bottom:5px;
-    padding-right: 5px;
+    padding-right: 35px;
     width: 100%;
     padding-left: 120px;
     border:0px solid ;
     border-radius:50px;
     box-sizing: border-box;
     height: 100%;
-    max-height: 100px;
+    
+}
+
+
+
+
+
+
+@media only screen and (max-width: 500px) {
+ 
+    .PostTextArea {
+        max-height:200px;}
+
+
+
+
+        .PostDiv{
+
+            min-height: 81px;
+        }
+    
+        .PostAvatar {
+    width:80px; height:80px !important;  
+    margin-bottom: -86px;
+    margin-left: 5px;
+    }
+    .attachicon{
+        float: right;
+        
+    }
+    
+
+
+
+
+
+
+
+
+}
+
+@media only screen and (max-width: 400px) {
+ 
+    .PostDiv{
+
+        min-height: 51px;
+    }
+
+    .PostAvatar {
+width:50px; height:50px !important;  
+margin-bottom: -58px;
+margin-left: 5px;
+}
+.attachicon{
+    float: right;
+    margin-top: -55px !important;}
+
+
+    .PostTextArea {
+padding-left:60px;
+        max-height:150px;}
+
+        @media only screen and (max-width: 350px) {
+ 
+            .PostTextArea {
+                max-height:100px;}
+        }
 }

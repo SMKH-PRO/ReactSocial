@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import './Home.css'
 import * as firebase from 'firebase';
 import Paper from '@material-ui/core/Paper';
-import Avatar from '@material-ui/core/Avatar';
-import TextField from '@material-ui/core/TextField';
+import Attach from '@material-ui/icons/AttachFile';
+import Button from '@material-ui/core/Button';
+import autosize from "autosize";
 
 
 class Home extends Component {
@@ -24,6 +25,9 @@ class Home extends Component {
   }
 
   componentDidMount(){
+    this.textarea.focus();
+    autosize(this.textarea);
+
 
     this.FunctionBeforeRender()
     
@@ -86,14 +90,10 @@ keyDownHandler(e){
   }, 20);
 
 
-  if((this.state.PostText.match(new RegExp("\n", "g")) || []).length >2 ){
-
-    e.preventDefault()
-
-  }
+ 
 
 if(e.target.value.length >499){
-    if(e.keyCode != 8){
+    if(e.keyCode != 8 || (!e.keyCode === 17 &&  e.keyCode === 65  ) ){
 
       
     e.preventDefault()
@@ -113,9 +113,10 @@ if(e.target.value.length >499){
     return (
       <div >
              <img  className="PostAvatar" src={ProfileIMG ? ProfileIMG : false} />
-
+             <Button  variant="fab" className="attachicon" >
+<Attach /></Button>
      <Paper className="PostDiv">
-     <textarea onPaste={this.keyDownHandler} value={PostText} onKeyDown={this.keyDownHandler} onChange={this.handleChange("PostText")} className="PostTextArea"></textarea>
+     <textarea   ref={c => (this.textarea = c)} onPaste={this.keyDownHandler} value={PostText} onKeyDown={this.keyDownHandler} onChange={this.handleChange("PostText")} className="PostTextArea"></textarea>
      </Paper>
 
 <p style={{float:'right'}}>{PostText.length} / 500</p>

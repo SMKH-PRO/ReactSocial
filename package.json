@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^3.0.1",
     "@material-ui/icons": "^3.0.1",
+    "autosize": "^4.0.2",
     "axios": "^0.18.0",
     "bigpicture-react": "^1.0.4",
     "firebase": "^5.4.1",
