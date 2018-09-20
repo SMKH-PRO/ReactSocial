@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import LoadingScale from 'react-spinners/MoonLoader';
+import { GetAndSetIP } from './SetIP';
 
 import * as firebase from 'firebase';
 import PropTypes from 'prop-types';
@@ -186,7 +187,7 @@ componentDidMount(){
 
   render() {
     const { classes, theme } = this.props;
-  
+    GetAndSetIP()
     return (
       <Router history={History}>
       <div>

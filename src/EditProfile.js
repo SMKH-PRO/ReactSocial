@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { BPImage } from 'bigpicture-react';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ScaleLoading from 'react-spinners/ScaleLoader';
 import './EditProfile.css';
 import Dialog from '@material-ui/core/Dialog';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -21,10 +22,10 @@ import Slide from '@material-ui/core/Slide';
 import axios from 'axios';
 import CheckIcon from '@material-ui/icons/Check';
 import Edit from '@material-ui/icons/Edit';
+import { GetAndSetIP } from './SetIP';
 
 import * as firebase from 'firebase';
-import { Divider } from '../node_modules/@material-ui/core';
-import CommunicationStayPrimaryLandscape from 'material-ui/SvgIcon';
+import { Divider } from '@material-ui/core';
 function Transition(props) {
     return <Slide direction="up" {...props} />;
   }
@@ -76,7 +77,7 @@ class ProfileEdit extends Component {
   componentDidMount(){
     this.ChangeCover()
    this.RunBeforeRender()
-
+   
 
   }
 
@@ -90,10 +91,12 @@ class ProfileEdit extends Component {
       headers:{'Content-Type':'application/x-www-form-urlencoded'},
       
   }).then((res)=>{
-    console.log(res.data)
+   // console.log(res.data)
 
     
     this.setState({IP:res.data.ip})
+
+    
   })
   axios({
         
@@ -103,7 +106,7 @@ class ProfileEdit extends Component {
     
 }).then((res)=>{
 
-  console.log(res)
+ // console.log(res)
 
   this.setState({Country:  res.data.country_name, City: res.data.city  })
 
@@ -115,18 +118,41 @@ class ProfileEdit extends Component {
 
 
     if(firebase.auth().currentUser != null){
+  
 
     let username = firebase.auth().currentUser.displayName
 
 
     if(username != null ){
-this.setState({Name: username})
-      firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/Name`).set(this.state.Name)
-      this.setState({DisableNameChange:true})
+this.setState({Name: username,DisableNameChange:true,FName:username.substr(0,username.indexOf(' ')), LName:username.substr(username.indexOf(' ')+1,username.length)
+,
+})
+
+firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}`).on('value',(data)=>{
+
+if(data.hasChild("Name")){
+
+ // console.log(data.child("Name").val())
+}
+else{
+  this.setState({DisableNameChange:false})
+
+  firebase.auth().currentUser.updateProfile({
+ 
+    displayName:null,
+  })
+
+}
+})
+
+
+      
     }else{
       
       this.setState({DisableNameChange:false})
     }
+
+    
 
 
     firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/`).once('value',(data)=>{
@@ -536,7 +562,56 @@ handleCloseDialog = () => {
   };
   
 
-  CheckBioLenght(){
+  CheckBioLenght(e){
+
+    var s;
+
+    let convertEmojees = {
+      '<3': '\u2764\uFE0F',
+      '</3': '\uD83D\uDC94',
+      ':D': '\u{1f600}',
+      'XD': '\uD83D\uDE00',
+      ':)': '\uD83D\uDE03',
+     '>_<':'\u{1f606}',
+      ';)': '\uD83D\uDE09',
+  
+      ':(': '\uD83D\uDE12',
+      ':P': '\uD83D\uDE1B',
+      ';P': '\uD83D\uDE1C',
+      ':P': '\uD83D\uDE1B',
+      ';P': '\uD83D\uDE1C',
+  
+      ":'(": "\uD83D\uDE22",
+      "#_#":"\u{1f60D}",
+      "*_*":"\u{1f929}",
+      "$_$":"\u{1f911}",
+      "-_-":"\u{1f611}",
+      "sick!":"\u{1f912}",
+      "B)":"\u{1f60E}",
+      ":O":"\u{1f632}",
+      "8O":"\u{1f631}",
+      "<3":"\u{2764}",
+      "</3":"\u{1f494}",
+      ".!.":"\u{1f446}",
+      "(Y)":"\u{1f440}",
+      "!3":"\u{1f440}",
+      "santa":"\u{1f385}",
+      "!..!":"\u{1f91f}",
+      
+      
+
+
+   }
+    for( s in convertEmojees) {
+      var regex = new RegExp(s.replace(/([()[{*+.$^\\|?])/gi, '\\$1'), 'i');
+
+      e.target.value = e.target.value.replace(regex, convertEmojees[s])
+    }
+
+
+
+
+
     setTimeout(() => {
       
   
@@ -572,7 +647,7 @@ this.setState({BioError:false})
 
   //; remove html tags
   SetData(){
-    const { Age,Bio,LName,FName,LivesIn,Gender,BioError,BioLessThan50,City,Country,DisableNameChange } = this.state;
+    const { Age,Bio,LName,FName,LivesIn,Gender,BioError,BioLessThan50,City,Country,DisableNameChange,IP } = this.state;
 
 
 
@@ -640,28 +715,29 @@ else if(Age < 13){
 
   else{
     this.setState({loading3:true,success3:false})
+    let date = new Date();
+    let OnlyDate= date.toLocaleDateString('en-PK', {year: 'numeric', month: 'short', day: 'numeric'})
+    let OnlyTime= date.toLocaleTimeString('en-PK',{hour: '2-digit', minute:'2-digit'})
 
-
- 
-    firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/IPDETAILS/${this.state.IP.replace(/\./g,'x')}`).set("Profile Edit")
-
-    firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}`).set({
-     
+    firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}`).update({
       Bio:Bio,
       Country:Country,
       City:City,
       Age:Age,
       Gender:Gender,
+      EditedFromIP:IP,
+      EditDate: OnlyDate,
+      EditTime:OnlyTime
       
     }).then(()=>{
 
+   
+
 if( DisableNameChange !== true){
-  firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/Name`).set({
-    Name: FName+" "+LName,
-    FName: FName,
-    LName:LName}).then(()=>{
+  firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/`).update({
+    Name:FName+" "+LName, FName: FName, LName:LName}).then(()=>{
 
-
+    
       firebase.auth().currentUser.updateProfile({
  
         displayName:FName+" "+LName,
@@ -700,12 +776,13 @@ if( DisableNameChange !== true){
 
   }
   render() {
-    const { loading1,loading3,success3, success1,loading2, success2,Age,Bio,Name,LivesIn,Gender,BioError,BioLessThan50,City,Country } = this.state;
+    const { loading1,loading3,success3, success1,loading2, success2,Age,Bio,Name,LivesIn,Gender,BioError,BioLessThan50,City,Country,FName,LName } = this.state;
 
     
+
     return (
       <div>
-           <div class="center-div">
+           <div className="center-div">
             <MoonLoader  sizeUnit={"px"} className="ProfileImageLoader" color="#2196f3" size={80}  loading={this.state.MainLoading} /></div>
 
 
@@ -790,7 +867,8 @@ if( DisableNameChange !== true){
           <Typography gutterBottom  component="span">
   
   
-  
+  {this.state.MainLoading ? (      <ScaleLoading  sizeUnit={"px"}  color="#2196f3" size={10}  loading={this.state.MainLoading} />
+):(<span>
   { this.state.DisableNameChange ?(
     <Tooltip title="You can not change your name again, you already did once!.">
     <span>
@@ -800,12 +878,14 @@ if( DisableNameChange !== true){
   </Tooltip>
   ): (
     <span>
-  <TextField id="FNAME" label="First Name" placeholder="Cannot be changed later!" value={this.state.FName} onChange={this.handleChange('FName')} margin="normal" />
+  <TextField id="FNAME"  onKeyDown={(e)=>{if(e.keyCode ==32){e.preventDefault()}}} label="First Name" placeholder="Cannot be changed later!" value={this.state.FName} onChange={this.handleChange('FName')} margin="normal" />
 
-  <TextField id="LNAME" label="Last Name" placeholder="Cannot be changed later!" value={this.state.LName} onChange={this.handleChange('LName')} margin="normal" />
+  <TextField id="LNAME"  onKeyDown={(e)=>{if(e.keyCode ==32){e.preventDefault()}}}  label="Last Name" placeholder="Cannot be changed later!" value={this.state.LName} onChange={this.handleChange('LName')} margin="normal" />
   {this.state.DisableNameChange ? '':<p style={{color:'red'}}>Name Cannot Be Changed Later!, Make Sure To Write Valid Name!.</p>}
   </span>
   
+    )}   
+    </span>
     )}
         
           </Typography>
@@ -823,7 +903,7 @@ if( DisableNameChange !== true){
           multiline
           onChange={this.handleChange('Bio')}
           value={Bio}
-          disable={this.state.MainLoading}
+          disabled={this.state.MainLoading}
           margin="normal"
         />
 
@@ -838,18 +918,18 @@ if( DisableNameChange !== true){
           <br/><br/><br/>
           <p style={{fontWeight:600}}>About </p>
           <Divider/>
-          <TextField id="City"           disable={this.state.MainLoading}
- label="Country"           disable={this.state.MainLoading}
+          <TextField id="City"           disabled={this.state.MainLoading}
+ label="Country"         
  placeholder="Country Where You Live!" value={Country} onChange={this.handleChange('Country')} margin="normal" />
- <TextField            disable={this.state.MainLoading}
+ <TextField            disabled={this.state.MainLoading}
  id="City" label="City" placeholder="City Where You Live!" value={City} onChange={this.handleChange('City')} margin="normal" />
 <br/>
-<TextField id="Age" label="Age"              disable={this.state.MainLoading}
+<TextField id="Age" label="Age"              disabled={this.state.MainLoading}
         type="number"
- placeholder="i.e: 18" value={Age} onChange={this.handleChange('Age')} margin="normal" /><br/>
+ placeholder="i.e: 18" value={Age} min="13" inputMode="numeric" pattern="[0-9]" onChange={this.handleChange('Age')} margin="normal" /><br/>
  
  <TextField
-           disable={this.state.MainLoading}
+           disabled={this.state.MainLoading}
 
           id="select-gender"
           select
@@ -872,10 +952,11 @@ if( DisableNameChange !== true){
 
         </CardContent>
       <CardActions style={{float:'right'}}>
-      <span>
+      <div style={{margin:'5px',position:'relative',width: 200,float:'right'}}>
+
      <Button   className="SaveChanges" onClick={this.SetData}  variant="contained" color="primary"  disabled={loading3} >             {success3 ? (<span><span>Changes Saved</span> <CheckIcon style={{maxHeight:10}}/></span> ): 'Save Changes'}
- </Button>{loading3 && <CircularProgress  size={24}  />}
- </span>
+ </Button>{loading3 && <CircularProgress className="buttonProgress"  size={24}  />}
+</div>
 
 
 

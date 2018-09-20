@@ -1,9 +1,20 @@
 
+
+.buttonProgress{
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-Top: -12px;
+    margin-Left: -12px;
+}
+
 .PostDiv{
 
 padding: 1px !important;
 height:auto;
 
+clear:both;
 
 overflow: hidden;
 border-bottom-left-radius: 50px !important;
@@ -15,15 +26,14 @@ border-bottom-left-radius: 50px !important;
     max-width: 100% !important;
     position: relative;
     width: 100px;
-    margin-bottom: -106px;
+    margin-bottom: -138px;
     border-radius: 50%;
     /* z-index: 0; */
    
     height: 100px !important;
 }
 .attachicon{
-    float: right;
-    position: relative;
+    float: right;    margin-top: -78px !important;
     box-shadow: 0px 0px 0px black !important;
     background-color: transparent !important;
 }
@@ -50,6 +60,9 @@ border-bottom-left-radius: 50px !important;
 
 @media only screen and (max-width: 500px) {
  
+    .attachicon{
+        margin-top: -68px !important;
+    }
     .PostTextArea {
         max-height:200px;}
 
@@ -63,7 +76,7 @@ border-bottom-left-radius: 50px !important;
     
         .PostAvatar {
     width:80px; height:80px !important;  
-    margin-bottom: -86px;
+    margin-bottom: -118px;
     margin-left: 5px;
     }
     .attachicon{
@@ -90,7 +103,7 @@ border-bottom-left-radius: 50px !important;
 
     .PostAvatar {
 width:50px; height:50px !important;  
-margin-bottom: -58px;
+margin-bottom: -89px;
 margin-left: 5px;
 }
 .attachicon{

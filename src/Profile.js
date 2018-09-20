@@ -59,7 +59,6 @@ function TabContainer(props) {
 
 
 
-
 class Profile extends Component {
 
 
@@ -78,6 +77,7 @@ class Profile extends Component {
     Gender:'',
     City:'',
     Country:'',
+    LastTimeUpdated:''
     
     
   }
@@ -147,6 +147,7 @@ firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/`).on('v
       LivesIn:data.child("City").val()+", "+data.child("Country").val(),
       Age:data.child("Age").val(),
       Gender:data.child("Gender").val(),
+      LastTimeUpdated:"Updated on "+data.child("EditDate").val()+" at "+data.child("EditTime").val(),
       loading:false,
     })
   }else{
@@ -186,9 +187,9 @@ else{
     this.setState({ value });
   };
 
-  
+
   render() {loading
-    const { value,loading,Age,Bio,Name,LivesIn,Gender,City,Country } = this.state;
+    const { LastTimeUpdated,value,loading,Age,Bio,Name,LivesIn,Gender,City,Country } = this.state;
 
     const LoadingSpinner = (
       <Loading  sizeUnit={"px"}  color="#2196f3" size={10}  loading={this.state.loading} />
@@ -212,15 +213,20 @@ else{
         <Avatar  className="UserProfilePic"  alt="Profile PIC" src={this.state.ProfileIMG}  / >
         </BPImage>
         </div>
+        
      <CardContent > 
-      
-      
+     <p style={{float:'right',clear:'both',color:'gray',fontSize:11,marginTop:"-35px"}} >{LastTimeUpdated}</p>
+     
           <Typography className="UserName" gutterBottom variant="headline" component="h2">
     {this.state.Name }       <Loading  sizeUnit={"px"}  color="#2196f3" size={10}  loading={this.state.nameloading} />
 
        </Typography>
        <Typography  component="p">
-{this.state.Bio} <Loading  sizeUnit={"px"} className="LoadingBio" color="#2196f3" size={10}  loading={this.state.loading} />
+
+       <span dangerouslySetInnerHTML={{
+    __html: this.state.Bio.replace(/(https?:\/\/[^\s]+)/g, "<a class='sentlinks' target='_blank' href='$1'>$1</a>")
+  }}></span>
+ <Loading  sizeUnit={"px"} className="LoadingBio" color="#2196f3" size={10}  loading={this.state.loading} />
        </Typography>
           <br/>
           <ExpansionPanel className="AboutUser">

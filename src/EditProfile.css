@@ -1,3 +1,12 @@
+.buttonProgress{
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-Top: -12px;
+    margin-Left: -12px;
+}
+
 .UploadCoverBtn{
     float:right;
     font-weight: 550 !important;
