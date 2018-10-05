@@ -34,7 +34,8 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import {
 Router,
   Route,
-  Link
+   Redirect,
+    Link
 } from 'react-router-dom'
 import Signin from './signin';
 import register from './register.js';
@@ -42,7 +43,8 @@ import register from './register.js';
 import Home from './Home';
 import Profile from './Profile.js';
 import EditProfile from './EditProfile.js';
-
+import NotFound from './404.js';
+import Post from './Post.js';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 const History = createBrowserHistory();
@@ -139,6 +141,7 @@ class MiniDrawer extends React.Component {
       loggedIn: false,
       LogoutSuccess: false,
       LogInNotChecked:true,
+      userid: ''
     };
 
     
@@ -156,7 +159,7 @@ checklogin(){
       // User is signed in.
       
    // console.log(user)
-    this.setState({loggedIn: true,LogInNotChecked:false})
+    this.setState({loggedIn: true,LogInNotChecked:false,userid: user.uid})
 
       // ...
     } else {
@@ -254,7 +257,7 @@ ReactSocial            </Typography></Link>
     </ListItem></Link>
 
 
-            <Link to="Profile">   <ListItem button>
+            <Link to={`/Profile/${this.state.userid}`}>   <ListItem button>
       <ListItemIcon>
         <AccountCircle />
       </ListItemIcon>
@@ -329,11 +332,13 @@ ReactSocial            </Typography></Link>
 <Route exact path="/" component={Signin} />
 <Route exact path="/EditProfile" component={EditProfile} />
 
-        <Route exact path="/Profile" component={Profile}/>   
+        <Route exact path="/Profile/:userid?" component={Profile}/>   
+        <Route exact path="/Post/:postid?" component={Post}/>
 
+     
         <Route exact path="/Home" component={Home}/>   
         <Route exact path="/SignUp" component={register}/>   
-
+        <Route exact path="/404" component={NotFound}/>   
         
              </main>
         

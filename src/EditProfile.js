@@ -86,7 +86,7 @@ class ProfileEdit extends Component {
   RunBeforeRender(){
     axios({
         
-      url: 'https://www.kashan-haider.com/ReactSocial/ipinfo.php',
+      url: 'https://www.mutualfilesharing.com/ReactSocial/ipinfo.php',
       method:'GET',
       headers:{'Content-Type':'application/x-www-form-urlencoded'},
       
@@ -289,19 +289,19 @@ else{
 
     axios({
         
-        url: 'https://www.kashan-haider.com/ReactSocial/UploadedFiles/upload.php',
+        url: 'https://www.mutualfilesharing.com/ReactSocial/UploadedFiles/upload.php',
         method:'POST',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
         data: filedata
     }).then((res)=>{
         console.log(res)
         //var uploadedfilename = res.data.files[0];
-          var downloadURL = '//reactsocial.kashan-haider.com/UploadedFiles/' +encodeURIComponent(file.name.trim()) ;
+          var downloadURL = '//reactsocial.mutualfilesharing.com/UploadedFiles/' +encodeURIComponent(file.name.trim()) ;
     
     
     console.log(downloadURL)
 
-    firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/cover`).set(downloadURL).then(()=>{
+    firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/`).update({cover:downloadURL}).then(()=>{
       this.setState({loading1:false,success1:true,coverIMG:downloadURL})
 
     }).catch((err)=>{
@@ -388,19 +388,19 @@ handleButtonChange = (e) => {
 
     axios({
         
-        url: 'https://www.kashan-haider.com/ReactSocial/UploadedFiles/upload.php',
+        url: 'https://www.mutualfilesharing.com/ReactSocial/UploadedFiles/upload.php',
         method:'POST',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
         data: filedata
     }).then((res)=>{
         console.log(res)
         //var uploadedfilename = res.data.files[0];
-          var downloadURL = '//reactsocial.kashan-haider.com/UploadedFiles/' +encodeURIComponent(file.name.trim()) ;
+          var downloadURL = '//reactsocial.mutualfilesharing.com/UploadedFiles/' +encodeURIComponent(file.name.trim()) ;
     
     
     console.log(downloadURL)
 
-    firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/cover`).set(downloadURL).then(()=>{
+    firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}`).update({cover:downloadURL}).then(()=>{
       this.setState({loading1:false,success1:true,coverIMG:downloadURL})
 
     }).catch((err)=>{
@@ -488,16 +488,17 @@ handleButtonChange2 = (e) => {
 
   axios({
       
-      url: 'https://www.kashan-haider.com/ReactSocial/UploadedFiles/upload.php',
+      url: 'https://www.mutualfilesharing.com/ReactSocial/UploadedFiles/upload.php',
       method:'POST',
       headers:{'Content-Type':'application/x-www-form-urlencoded'},
       data: filedata
   }).then((res)=>{
       //console.log(res)
       //var uploadedfilename = res.data.files[0];
-        let  downloadURL = '//reactsocial.kashan-haider.com/UploadedFiles/' +encodeURIComponent(file.name.trim()) ;
+        let  downloadURL = '//reactsocial.mutualfilesharing.com/UploadedFiles/' +encodeURIComponent(file.name.trim()) ;
         let user = firebase.auth().currentUser;
-
+        this.setState({ProfileIMG:downloadURL})
+firebase.database().ref(`USERDETAILS/${user.uid}/Pic`).set(downloadURL)
         user.updateProfile({
  
           photoURL:downloadURL
@@ -727,7 +728,8 @@ else if(Age < 13){
       Gender:Gender,
       EditedFromIP:IP,
       EditDate: OnlyDate,
-      EditTime:OnlyTime
+      EditTime:OnlyTime,
+      Pic: this.state.ProfileIMG
       
     }).then(()=>{
 

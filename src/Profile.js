@@ -77,11 +77,14 @@ class Profile extends Component {
     Gender:'',
     City:'',
     Country:'',
-    LastTimeUpdated:''
+    LastTimeUpdated:'',
+    CurrentUser: false,
     
     
   }
   this.ChangeCover = this.ChangeCover.bind(this)
+  console.log(this.props.match.params.userid)
+
 
   }
 
@@ -91,8 +94,9 @@ class Profile extends Component {
 
   componentDidMount(){
     this.ChangeCover();
-  }
 
+
+  }
 
 
 
@@ -105,40 +109,25 @@ class Profile extends Component {
 
 
 
-if(localStorage.getItem("Cover") != null){
-  this.setState({coverIMG: localStorage.getItem("Cover")})
-}
-if(localStorage.getItem("Profile") != null){
-  this.setState({ProfileIMG: localStorage.getItem("Profile")})
-}
+
     console.log("CHange Cover started")
 if(firebase.auth().currentUser !== null){
 
+  if(this.props.match.params.userid ==firebase.auth().currentUser.uid){
+
+    console.log(this.props.match.params.userid)
+    console.log(this.props.match.params.userid ==firebase.auth().currentUser.uid)
+this.setState({CurrentUser: true})
+  }
+
+
+
 let username=  firebase.auth().currentUser.displayName;
-if(username !== null){
-  this.setState({Name: username,nameloading:false})
-}
 
-if(firebase.auth().currentUser.photoURL !== null && firebase.auth().currentUser.photoURL != "null"){
 
-this.setState({ProfileIMG:firebase.auth().currentUser.photoURL})
-localStorage.setItem("Profile", firebase.auth().currentUser.photoURL)
-setTimeout(() => {
-  this.setState({loading1:false})
-
-}, 500);
-
-}else{
-  localStorage.setItem("Profile",'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg' )
-
-  this.setState({ProfileIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/profile.jpg'})
-  setTimeout(() => {
-    this.setState({loading1:false})
-  
-  }, 500);
-}
-firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/`).on('value',(data)=>{
+firebase.database().ref(`USERDETAILS/${this.props.match.params.userid}/`).on('value',(data)=>{
   if(data.child("Name").val() != null && data.child("Bio").val() != null && data.child("Country").val() && data.child("City").val()!= null && data.child("Age").val() != null && data.child("Gender").val() != null ){
+
 
 
 
@@ -148,12 +137,24 @@ firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/`).on('v
       Age:data.child("Age").val(),
       Gender:data.child("Gender").val(),
       LastTimeUpdated:"Updated on "+data.child("EditDate").val()+" at "+data.child("EditTime").val(),
+   Name: data.child("Name").val(),nameloading:false,
+   ProfileIMG: data.child("Pic").val(),
+   coverIMG :  data.child("cover").val(), 
+
       loading:false,
     })
+
+
   }else{
     console.log("Something Is Missing!",data.child("Gender").val(),data.child("Bio").val(),data.child("Age").val() )
 
-    this.props.history.push('EditProfile')
+    if(this.state.CurrentUser){
+    this.props.history.push('/EditProfile')
+    }
+    else{
+      this.props.history.push('/404')
+
+    }
     
   }
 
@@ -161,18 +162,7 @@ firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/`).on('v
 
 
 
-firebase.database().ref(`USERDETAILS/${firebase.auth().currentUser.uid}/cover`).on('value',(data)=>{
 
-  if(data.val() != null){
-this.setState({coverIMG: data.val()})
-localStorage.setItem("Cover",data.val())
-  }
-else{
-  localStorage.setItem("Cover","https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/cover.jpg")
-
-  this.setState({coverIMG:'https://raw.githubusercontent.com/SMKH-PRO/ReactSocial/master/src/cover.jpg'})
-}
-})
 }
 else{
   this.setState({loading1:true})
@@ -194,6 +184,8 @@ else{
     const LoadingSpinner = (
       <Loading  sizeUnit={"px"}  color="#2196f3" size={10}  loading={this.state.loading} />
     )
+
+    //console.log("render: ",this.state.currentUser)
     return (
       
       <div >
@@ -267,15 +259,19 @@ else{
         </CardContent>
 
       <CardActions>
-      <Button title="Chat" onClick={()=>{ console.log(Age,Bio,Name,Gender,City,Country) }} variant="fab" color="primary" aria-label="Chat" >
+      <Button title="Chat" onClick={()=>{ alert("This function is not yet added! (you are viewing the in-complete app!)") }} variant="fab" color="primary" aria-label="Chat" >
         <ChatIcon />
       </Button>
-        <Button title="Follow" variant="fab" style={{background:'#2196f3',color:'white'}} aria-label="Add" >
+        <Button title="Follow" onClick={()=>{ alert("This function is not yet added! (you are viewing the in-complete app!)") }}  variant="fab" style={{background:'#2196f3',color:'white'}} aria-label="Add" >
         <Follow />
       </Button>
-      <Button  onClick={()=>{      this.props.history.push('EditProfile')}} title="Edit" variant="fab" color="primary" aria-label="Edit" >
+
+
+
+      {this.state.CurrentUser ? (<Button  onClick={()=>{      this.props.history.push('/EditProfile')}} title="Edit" variant="fab" color="primary" aria-label="Edit" >
         <Edit />
-      </Button>
+      </Button>):(<br/>)}
+      
       </CardActions>
     </Card>
 {/*Profile Tabs Starts Here*/}
@@ -301,16 +297,35 @@ else{
         
         {value === 0 && <TabContainer>
 
-
           {LoadingSpinner}
+#TAB1<br/>
+          Coming Soon..!
+
+           <br/>
+           Currently You Are Viewing The In-complete version of this app!
+    
         </TabContainer>}
         {value === 1 && <TabContainer>
           {LoadingSpinner}
+          #TAB2 <br/>
+
+          Coming Soon..!
+
+           <br/>
+           Currently You Are Viewing The In-complete version of this app!
 
         </TabContainer>}
         {value === 2 && <TabContainer>
 
               {LoadingSpinner}
+
+              #TAB3 <br/>
+              Coming Soon..!
+
+
+
+           <br/>
+           Currently You Are Viewing The In-complete version of this app!
         </TabContainer>}
         
       </div>
