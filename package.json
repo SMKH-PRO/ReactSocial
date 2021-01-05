@@ -6,7 +6,7 @@
     "@material-ui/core": "^3.0.1",
     "@material-ui/icons": "^3.0.1",
     "autosize": "^4.0.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bigpicture-react": "^1.0.4",
     "firebase": "^5.4.1",
     "material-ui": "^0.20.2",
